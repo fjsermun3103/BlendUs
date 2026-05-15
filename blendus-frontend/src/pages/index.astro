@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Feed from '../components/Feed';
+import SuggestedUsers from '../components/SuggestedUsers';
+import ChatPreviewWidget from '../components/ChatPreviewWidget';
+---
+
+<Layout title="Home" activePage="home">
+  <div class="page-wrapper">
+    <main class="page-main">
+      <Feed client:load />
+    </main>
+
+    <aside class="page-aside">
+      <!-- Dynamic Chat Preview Widget replacing Trending Now -->
+      <ChatPreviewWidget client:load />
+
+      <!-- Suggested users (dynamic, React island) -->
+      <SuggestedUsers client:load />
+    </aside>
+  </div>
+</Layout> 

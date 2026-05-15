@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ExplorePage from '../components/ExplorePage';
+import SuggestedUsers from '../components/SuggestedUsers';
+import SommelierWidget from '../components/SommelierWidget';
+---
+<Layout title="Explore" activePage="explore">
+  <div class="page-wrapper">
+    <main class="page-main">
+      <ExplorePage client:load />
+    </main>
+    <aside class="page-aside">
+      <SommelierWidget />
+      <SuggestedUsers client:load />
+    </aside>
+  </div>
+</Layout>

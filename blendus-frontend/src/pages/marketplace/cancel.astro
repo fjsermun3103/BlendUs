@@ -1,0 +1,86 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Payment Cancelled | BlendUs">
+    <main class="cancel-page">
+        <div class="cancel-container">
+            <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" height="80px" viewBox="0 -960 960 960" width="80px" fill="#ef4444">
+                    <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm-96-144L240-448l56-56 88 88 280-280 56 56-336 336Z" transform="scale(0.8) translate(120, 120)" style="display:none;"/>
+                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </div>
+            <h1>Payment Cancelled</h1>
+            <p>You have cancelled the payment process. No charges have been made.</p>
+            <div class="actions">
+                <a href="/marketplace" class="btn primary-btn">Return to Marketplace</a>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .cancel-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--gray-50);
+        padding: 2rem;
+    }
+    .cancel-container {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .icon-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        background: #fee2e2;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        align-items: center;
+        margin: 0 auto;
+    }
+    h1 {
+        font-size: 2rem;
+        color: var(--gray-900);
+        margin: 0;
+    }
+    p {
+        color: var(--gray-600);
+        font-size: 1.1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+    .btn {
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+    .primary-btn {
+        background-color: var(--gray-800);
+        color: white;
+    }
+    .primary-btn:hover {
+        background-color: var(--gray-900);
+    }
+</style>

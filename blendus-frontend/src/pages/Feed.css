@@ -1,0 +1,29 @@
+.page-wrapper {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+
+}
+.page-aside {
+    max-height: 100vh;
+    position: fixed;
+    margin-top: calc(3rem + 3rem);
+    grid-column: 9 / 13;
+    justify-self: end;
+    top: 0;
+    grid-row: 1/4;
+    padding: 0rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    z-index: 0;
+
+}
+
+.page-main {
+    grid-column: span 8;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 2rem;
+}

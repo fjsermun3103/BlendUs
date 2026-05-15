@@ -1,0 +1,113 @@
+.trending-hashtags {
+    height: fit-content;
+    padding: 1rem;
+    border-radius: 40px;
+    width: 100%;
+    background: var(--gradient-trending);
+    border:1px solid oklch(92.4% 0.12 95.746 / 0.56);
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5rem;
+    .trending-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .7rem;
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+
+        }
+        .circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--amber-100);
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+
+            svg {
+                width: 30px;
+                height: 30px;
+                
+                inset: 0;
+                path {
+                    transition: .2s ease;
+                }
+            }
+        }
+    }
+    .trending-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        .hashtag-trend {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            cursor: pointer;
+            transition: .2s ease;
+            padding: .5rem 1.5rem;
+            border-radius: 15px;
+            .hashtag-trend-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            
+                img {
+                    width: 36px;
+                    height: 36px;
+                    object-fit: cover;
+                    border-radius: 15px;
+                }
+                .trend-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .3rem;
+                    .hashtag-name {
+                        font-size: 1rem;
+                        color: var(--gray-800);
+                        font-weight: 600;
+                        transition: .2s ease;
+                    }
+                    .hashtag-posts {
+                        font-weight: 400;
+                        font-size: 0.875rem;
+                        color: var(--gray-400);
+                        font-weight: 400;
+                    }
+                }
+            }
+            .statistic {
+                width: 30px;
+                height: 30px;
+                transition: .2s ease;
+                opacity: 0;
+                transition: .3s ease;
+            }
+        }
+
+        .hashtag-trend:hover {
+            background-color: var(--white);
+
+            .hashtag-trend-info {
+                .hashtag-name {
+                    color: var(--amber-700);
+                }
+            }
+            .statistic {
+                fill: var(--amber-700);
+                opacity: 1;
+            }
+        }
+    }
+}

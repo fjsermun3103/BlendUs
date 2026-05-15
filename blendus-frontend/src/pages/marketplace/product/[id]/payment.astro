@@ -1,0 +1,20 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import PaymentPage from '../../../../components/PaymentPage';
+
+const { id } = Astro.params;
+---
+
+<Layout title="Checkout | BlendUs">
+	<main>
+		<PaymentPage client:load productId={id || ""} />
+	</main>
+</Layout>
+
+<style>
+	main {
+		width: 100%;
+		min-height: 100vh;
+		background-color: var(--gray-50);
+	}
+</style>

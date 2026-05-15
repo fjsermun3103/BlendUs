@@ -1,0 +1,142 @@
+.comments-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 2rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+                0 1px 2px -1px rgb(0 0 0 / 0.1);
+    h3 {
+        font-size: 1.4rem;
+        color: var(--gray-900);
+        font-weight: 800;
+    }
+    .comments {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 1rem;
+        .profile-circle {
+            background: var(--gradient-profile);
+            border-radius: 50%;
+            height: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+            width: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+                border-radius: 50%;
+                height: 90%;
+                width: 90%;
+                border: 2px solid white;
+            }
+            svg {
+                width: clamp(1.25rem, 1.086rem + 0.658vw, 1.875rem);
+                height: clamp(1.25rem, 1.086rem + 0.658vw, 1.875rem);
+            }
+        }
+        .comment {
+            background-color: white;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gray-200);
+            padding: clamp(0.8rem, 0.747rem + 0.211vw, 1rem) 1rem;
+            font-family: Alexandria;
+            border-radius: 100px;
+            font-size: clamp(1rem, 0.934rem + 0.263vw, 1.25rem);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+        .comment:focus {
+            border: 1px solid #F59E0B;
+            outline: 1px solid #F59E0B;
+        }
+        .comment-button {
+            background: linear-gradient(135deg, #F59E0B, #b45309);
+            outline: none;
+            border: none;
+            border-radius: 50%;
+            height: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+            width: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: .2s ease;
+            box-shadow: 0 4px 12px rgba(180, 83, 9, 0.35);
+            svg {
+                height: clamp(1.563rem, 1.398rem + 0.658vw, 2.188rem);
+                width: clamp(1.563rem, 1.398rem + 0.658vw, 2.188rem);
+            }
+        }
+        .comment-button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(180, 83, 9, 0.5);
+        }
+        .comment-button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
+        }
+    }
+    
+    .comments-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        .public-comment {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            .pfp-circle {
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+                height: clamp(2.813rem, 2.648rem + 0.658vw, 3.438rem);
+                border-radius: 50%;
+                background: var(--gradient-profile);
+                flex-shrink: 0;
+                img {
+                    width: 90%;
+                    height: 90%;
+                    object-fit: cover;
+                    border-radius: 50%;
+                    position: relative;
+                    z-index: 1;
+                    border: 2px solid white;
+                }
+            }
+            .user-info {
+                display: flex;
+                flex-direction: column;
+                gap: .3rem;
+                .info-head {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    .name {
+                        font-size: clamp(1rem, 0.934rem + 0.263vw, 1.25rem);
+                        color: var(--gray-800);
+                        font-weight: 600;
+                    }
+                    .launch-date {
+                        font-size: clamp(0.8rem, 0.747rem + 0.211vw, 1rem);
+                        color: var(--gray-400);
+                        font-weight: 400;
+                    }
+                }
+                .comment-content {
+                    color: var(--gray-700);
+                    font-size: clamp(0.8rem, 0.747rem + 0.211vw, 1rem);
+                }
+            }
+        }
+    }
+}

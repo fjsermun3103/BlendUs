@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EditPostForm from '../../components/EditPostForm';
+
+const { id } = Astro.params;
+---
+
+<Layout title="Edit Smoothie" activePage="create">
+  <div class="create-page">
+    <EditPostForm client:load postId={Number(id)} />
+  </div>
+</Layout>

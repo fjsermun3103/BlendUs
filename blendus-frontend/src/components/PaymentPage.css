@@ -1,0 +1,157 @@
+.payment-wrapper {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--gray-50);
+    min-height: 100vh;
+
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 100px; /* Offset for nav */
+        
+        .back {
+            background-color: white;
+            padding: .5rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--gray-100);
+            transition: .2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .back:hover {
+            background-color: var(--gray-100);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+    
+        .title-subtitle {
+            h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--gray-900);
+            }
+            h3 {
+                font-size: 1rem;
+                font-weight: 400;
+                color: var(--gray-600);
+            }
+        }
+    }
+}
+
+.payment-details {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    gap: 2rem;
+    width: 100%;
+    
+    .product-details {
+        min-width: 380px; /* Increased to let it breathe */
+        flex: 1.5; /* Takes up slightly more space relative to the left */
+        padding: clamp(1rem, 0.737rem + 1.053vw, 2rem);
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--gray-100);
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        
+        .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            width: 100%;
+            .product-image {
+                width: 72px;
+                height: 72px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 8px;
+                }
+            }
+            .product-info {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                .name-price {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: clamp(0.8rem, 0.747rem + 0.211vw, 1rem);
+                    .product-name {
+                        font-weight: 700;
+                        color: var(--gray-900);
+                    }
+                    .price {
+                        font-size: clamp(0.7rem, 0.674rem + 0.105vw, 0.8rem);
+                        color: var(--gray-600);
+                        font-weight: 700;
+                    }
+                }
+                .product-tags {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    font-size: clamp(0.7rem, 0.674rem + 0.105vw, 0.8rem);
+                    color: var(--amber-700);
+                    .category {
+                        background-color: var(--amber-100);
+                        width: fit-content;
+                        padding: .2rem .8rem;
+                        color: var(--amber-800);
+                        border-radius: 100px;
+                        font-size: clamp(0.7rem, 0.674rem + 0.105vw, 0.8rem);
+                    }
+                    .quantity {
+                        font-weight: 700;
+                    }
+                }
+
+            }
+        }
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--gray-200);
+            margin: 20px 0;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--gray-600);
+            font-size: clamp(0.8rem, 0.747rem + 0.211vw, 1rem);
+        }
+        .total {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 1.2rem;
+        }
+        .secure-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: .5rem;
+            background: var(--amber-50);
+            border: 1px solid var(--amber-200);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            font-size: 13px;
+            color: var(--amber-900);
+            margin-top: 1rem;
+        }
+    }
+}

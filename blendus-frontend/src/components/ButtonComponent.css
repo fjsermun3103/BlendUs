@@ -1,0 +1,20 @@
+.btn {
+    width: fit-content;
+    padding: .5rem 1rem;
+    border-radius: 100px;
+    outline: none;
+    border: none;
+    background: linear-gradient(135deg, #F59E0B, #b45309);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: 'Alexandria';
+    cursor: pointer;
+    transition: .2s ease;
+    box-shadow: 0 2px 8px rgba(180, 83, 9, 0.25);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #D97706, #92400e);
+    box-shadow: 0 4px 14px rgba(180, 83, 9, 0.4);
+}

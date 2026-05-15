@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Page Not Found">
+  <div class="empty-state" style="padding-top: 10rem; min-height: 70vh;">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 80px; height: 80px; margin: 0 auto 1.5rem auto; color: var(--amber-500, #F59E0B);">
+      <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z" fill="currentColor" fill-opacity="0.2"/>
+      <path d="M8 15C8.5 13.5 10.5 12 12 12C13.5 12 15.5 13.5 16 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
+      <circle cx="15" cy="9" r="1.5" fill="currentColor"/>
+    </svg>
+    <h1 style="font-size: 2.5rem; color: var(--gray-900); font-weight: 800; font-family: 'Anek Odia', sans-serif;">Oops! 404</h1>
+    <p style="font-size: 1.2rem; color: var(--gray-600); margin-top: 1rem;">We couldn't find the smoothie recipe you're looking for.</p>
+    <a href="/" class="btn" style="display: inline-block; margin-top: 2rem; font-size: 1.1rem; padding: .8rem 1.5rem;">Return to the Kitchen</a>
+  </div>
+</Layout>

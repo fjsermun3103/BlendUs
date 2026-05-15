@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProfilePage from '../../components/ProfilePage';
+
+const { id } = Astro.params;
+const userId = parseInt(id ?? '0');
+---
+
+<Layout title="Profile" activePage="profile">
+  <div class="profile-page-root">
+    {isNaN(userId) ? (
+      <div class="empty-state"><p>Invalid profile.</p></div>
+    ) : (
+      <ProfilePage userId={userId} client:load />
+    )}
+  </div>
+</Layout>
+
+<style>
+  .profile-page-root {
+    padding-top: calc(5rem + 2rem);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+</style>

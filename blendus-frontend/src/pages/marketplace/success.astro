@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Payment Successful | BlendUs">
+    <main class="success-page">
+        <div class="success-container">
+            <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" height="80px" viewBox="0 -960 960 960" width="80px" fill="#4ade80">
+                    <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-56-252L708-616 652-672 424-444 308-560 252-504 424-332Z"/>
+                </svg>
+            </div>
+            <h1>Payment Successful!</h1>
+            <p>Thank you for your purchase. Your order has been placed successfully.</p>
+            <div class="actions">
+                <a href="/marketplace" class="btn primary-btn">Back to Marketplace</a>
+                <a href="/" class="btn secondary-btn">Go to Feed</a>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .success-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--gray-50);
+        padding: 2rem;
+    }
+    .success-container {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .icon-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    h1 {
+        font-size: 2rem;
+        color: var(--gray-900);
+        margin: 0;
+    }
+    p {
+        color: var(--gray-600);
+        font-size: 1.1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .btn {
+        padding: 1rem 1.5rem;
+        border-radius: 100px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s ease;
+        flex: 1;
+        min-width: 150px;
+    }
+    .primary-btn {
+        background-color: var(--amber-600);
+        color: white;
+    }
+    .primary-btn:hover {
+        background-color: var(--amber-700);
+    }
+    .secondary-btn {
+        background-color: var(--gray-100);
+        color: var(--gray-800);
+    }
+    .secondary-btn:hover {
+        background-color: var(--gray-200);
+    }
+</style>

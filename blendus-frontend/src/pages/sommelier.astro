@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SommelierPage from '../components/SommelierPage';
+---
+
+<Layout title="AI Sommelier" activePage="sommelier">
+  <div class="page-wrapper" style="display: flex; justify-content: center;">
+    <main class="page-main" style="max-width: 800px; width: 100%; padding: 2rem 1rem;">
+      <SommelierPage client:load />
+    </main>
+  </div>
+</Layout>

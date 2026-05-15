@@ -1,0 +1,67 @@
+.filters {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+
+    .filter {
+        padding: 0.5rem 1.25rem;
+        border-radius: 12px; /* Smoother corner */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        background-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(243, 244, 246, 0.8);
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+        img {
+            width: 22px;
+            height: 22px;
+            filter: grayscale(0.2);
+            transition: transform 0.3s ease;
+        }
+
+        p {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin: 0;
+        }
+    }
+
+    .filter:hover {
+        background-color: var(--white);
+        border-color: var(--amber-200);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        
+        img {
+            filter: grayscale(0);
+            transform: scale(1.1);
+        }
+    }
+
+    .active {
+        background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+        border: none;
+        box-shadow: 0 8px 20px rgba(217, 119, 6, 0.3);
+        cursor: default;
+        position: relative;
+        overflow: hidden;
+
+        p {
+            color: var(--white);
+        }
+    }
+
+    .active:hover {
+        background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,138 @@
+---
+import '../styles/global.css';
+import ChatDrawer from '../components/ChatDrawer';
+import '../components/NavComponent.css';
+
+interface Props {
+  title?: string;
+  activePage?: 'home' | 'explore' | 'create' | 'messages' | 'sommelier' | 'profile' | 'login' | 'register';
+}
+const { title = 'BlendUs', activePage } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="BlendUs — The social network for smoothie lovers. Share recipes, discover new blends and connect with the community.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>{title} — BlendUs</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-logo">
+        <a href="/">
+          <div class="brand">
+            <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4598 4.6821C11.999 4.10603 10.1634 4.03624 8.44724 4.89439C6.74737 5.74439 5.63985 7.23414 4.94838 9.30462C4.24917 11.3983 3.99976 14.0213 3.99976 16.9999C3.99976 17.6747 4.34721 18.4332 4.95687 19.0428C5.56652 19.6525 6.32499 20 6.99976 20C9.8827 20 12.505 19.7575 14.6233 19.06C16.7233 18.3687 18.253 17.258 19.1056 15.5528C19.9679 13.8281 19.9189 11.9841 19.3567 10.5262C19.108 9.88118 18.7767 9.34894 18.4078 8.94001L18.9806 11.8039C19.0889 12.3454 18.7377 12.8723 18.1961 12.9806C17.6546 13.0889 17.1277 12.7377 17.0194 12.1961L16.6363 10.2806L15.9138 11.9061C15.6895 12.4108 15.0985 12.6381 14.5939 12.4138C14.0892 12.1895 13.8619 11.5985 14.0862 11.0939L15.0302 8.96981L12.9061 9.91382C12.4014 10.1381 11.8105 9.91081 11.5862 9.40612C11.3619 8.90143 11.5892 8.31048 12.0939 8.08618L13.7195 7.36372L11.8039 6.98058C11.2623 6.87225 10.9111 6.34542 11.0194 5.80387C11.1277 5.26231 11.6546 4.9111 12.1961 5.01942L14.9778 5.57579C14.5776 5.23353 14.0688 4.92224 13.4598 4.6821ZM18.7737 6.64046C19.8668 7.33898 20.7216 8.50708 21.2227 9.80662C21.9674 11.7378 22.0321 14.1719 20.8944 16.4472C19.7338 18.7684 17.6849 20.1577 15.2488 20.9597C12.8311 21.7557 9.95984 22 6.99976 22C5.67452 22 4.43299 21.3474 3.54265 20.4571C2.6523 19.5667 1.99976 18.3252 1.99976 16.9999C1.99976 13.9461 2.25047 11.0693 3.05138 8.67108C3.86003 6.24973 5.25264 4.25571 7.55276 3.10556C9.83658 1.96357 12.2699 2.06296 14.1936 2.82154C15.4792 3.32855 16.6391 4.17819 17.3412 5.24451L18.2926 4.29301C18.6831 3.90247 19.3163 3.90243 19.7068 4.29293C20.0974 4.68343 20.0974 5.31659 19.7069 5.70714L18.7737 6.64046ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM17 16C17.5523 16 18 15.5523 18 15C18 14.4477 17.5523 14 17 14C16.4477 14 16 14.4477 16 15C16 15.5523 16.4477 16 17 16ZM12 13C12 13.5523 11.5523 14 11 14C10.4477 14 10 13.5523 10 13C10 12.4477 10.4477 12 11 12C11.5523 12 12 12.4477 12 13ZM7 13C7.55228 13 8 12.5523 8 12C8 11.4477 7.55228 11 7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13ZM8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17ZM9 7.99999C9.55228 7.99999 10 7.55228 10 6.99999C10 6.44771 9.55228 5.99999 9 5.99999C8.44772 5.99999 8 6.44771 8 6.99999C8 7.55228 8.44772 7.99999 9 7.99999Z" fill="#ffffff"/>
+            </svg>
+          </div>
+          <h1>BlendUs</h1>
+        </a>
+      </div>
+      <div class="nav-menu" id="nav-menu">
+        <a href="/" class={activePage === 'home' ? 'active' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 21H4C3.44772 21 3 20.5523 3 20V12.4142C3 12.149 3.10536 11.8946 3.29289 11.7071L11.2929 3.70711C11.6834 3.31658 12.3166 3.31658 12.7071 3.70711L20.7071 11.7071C20.8946 11.8946 21 12.149 21 12.4142V20C21 20.5523 20.5523 21 20 21H15M9 21H15M9 21V15C9 14.4477 9.44772 14 10 14H14C14.5523 14 15 14.4477 15 15V21" stroke="#6b7280" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          Home
+        </a>
+        <a href="/explore" class={activePage === 'explore' ? 'active' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.9604 11.4802C19.9604 13.8094 19.0227 15.9176 17.5019 17.4512C15.9812 18.9848 13.8688 19.9604 11.4802 19.9604C6.79672 19.9604 3 16.1637 3 11.4802C3 6.79672 6.79672 3 11.4802 3C16.1637 3 19.9604 6.79672 19.9604 11.4802Z" stroke="#6b7280" stroke-width="2"/>
+            <path d="M18.1553 18.1553L21.8871 21.8871" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Explore
+        </a>
+        <a href="/create" class={activePage === 'create' ? 'active' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 12H12M12 12H9M12 12V9M12 12V15M17 21H7C4.79086 21 3 19.2091 3 17V7C3 4.79086 4.79086 3 7 3H17C19.2091 3 21 4.79086 21 7V17C21 19.2091 19.2091 21 17 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Create
+        </a>
+        <a href="/messages" class={activePage === 'messages' ? 'active' : ''}>
+          <svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/>
+          </svg>
+          Messages
+        </a>
+        <a href="/marketplace" class={activePage === 'marketplace' ? 'active' : ''}>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+            <path d="M841-518v318q0 33-23.5 56.5T761-120H201q-33 0-56.5-23.5T121-200v-318q-23-21-35.5-54t-.5-72l42-136q8-26 28.5-43t47.5-17h556q27 0 47 16.5t29 43.5l42 136q12 39-.5 71T841-518Zm-272-42q27 0 41-18.5t11-41.5l-22-140h-78v148q0 21 14 36.5t34 15.5Zm-180 0q23 0 37.5-15.5T441-612v-148h-78l-22 140q-4 24 10.5 42t37.5 18Zm-178 0q18 0 31.5-13t16.5-33l22-154h-78l-40 134q-6 20 6.5 43t41.5 23Zm540 0q29 0 42-23t6-43l-42-134h-76l22 154q3 20 16.5 33t31.5 13ZM201-200h560v-282q-5 2-6.5 2H751q-27 0-47.5-9T663-518q-18 18-41 28t-49 10q-27 0-50.5-10T481-518q-17 18-39.5 28T393-480q-29 0-52.5-10T299-518q-21 21-41.5 29.5T211-480h-4.5q-2.5 0-5.5-2v282Zm560 0H201h560Z"/>
+          </svg>
+          Marketplace
+        </a>
+        <div id="nav-auth-slot" class="nav-user-profile" style="display: flex; align-items: center; gap: 1rem;"></div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <slot />
+
+    {activePage !== 'messages' && <ChatDrawer client:load />}
+
+    <script>
+      import { initAuth, $isLoggedIn, $user, clearAuth } from '../stores/authStore';
+      import { api } from '../lib/api';
+      initAuth();
+
+      const slot = document.getElementById('nav-auth-slot');
+      if (slot) {
+        const render = () => {
+          const loggedIn = $isLoggedIn.get();
+          const user = $user.get();
+          const fruitAvatars = ['strawberry.webp', 'mango.webp', 'blueberry.webp', 'kiwi.webp'];
+          if (loggedIn && user) {
+            const defaultAvatar = `/assets/avatars/${fruitAvatars[user.id % fruitAvatars.length]}`;
+            // If avatar is explicitly empty string, it was "removed", show silhouette
+            const displayAvatar = user.avatar === '' ? '/assets/avatars/no-user-pfp.svg' : (user.avatar || defaultAvatar);
+            slot.innerHTML = `
+              <a href="/profile/${user.id}" style="display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit;">
+                <div class="pfp-circle">
+                  <img class="avatar-img" src="${displayAvatar}" alt="${user.name}" style=" ${user.avatar === '' ? 'padding: 4px;' : ''}" />
+                </div>
+                <span style="font-weight:600;">${user.name.split(' ')[0]}</span>
+              </a>
+            `;
+          } else {
+            slot.innerHTML = `<a href="/login" class="btn btn-login">Sign In</a>`;
+          }
+        };
+        render();
+        $isLoggedIn.subscribe(render);
+        $user.subscribe(render);
+
+        // Debug: Log user state to console to trace avatar sync
+        $user.listen((u) => console.log('Navbar User Update:', u));
+        // Guard private links for guests
+        const guardedPaths = ['/create', '/messages'];
+        guardedPaths.forEach(path => {
+          const link = document.querySelector(`a[href="${path}"]`);
+          if (link) {
+            link.addEventListener('click', (e) => {
+              if (!$isLoggedIn.get()) {
+                e.preventDefault();
+                window.location.href = '/login';
+              }
+            });
+          }
+        });
+
+
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('nav-hamburger');
+        const menu = document.getElementById('nav-menu');
+        if (hamburger && menu) {
+          hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            menu.classList.toggle('menu-open');
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

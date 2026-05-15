@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CreatePostForm from '../components/CreatePostForm';
+---
+<Layout title="Create" activePage="create">
+  <div class="create-page">
+    <CreatePostForm client:load />
+  </div>
+</Layout>

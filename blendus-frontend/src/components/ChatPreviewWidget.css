@@ -1,0 +1,123 @@
+.chat-preview-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.chat-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-row {
+    padding: 0.8rem;
+    border-radius: 16px;
+    transition: background 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-row:hover {
+    background: #F8FAFC;
+}
+
+.chat-avatar {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    background: var(--gradient-profile);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-avatar img {
+    border: 2px solid white;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.group-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-preview-text {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #6B7280;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+.view-all-chats {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--amber-600);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-top: 1px solid #f1f5f9;
+    transition: background 0.2s;
+}
+
+.view-all-chats:hover {
+    background: var(--amber-50);
+}
+
+.view-all-chats svg {
+    transition: transform 0.2s;
+}
+
+.view-all-chats:hover svg {
+    transform: translateX(4px);
+}
+
+.unread-badge {
+    background: var(--amber-600);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+}
+
+.no-chats-msg {
+    text-align: center;
+    color: #9CA3AF;
+    font-size: 0.95rem;
+    padding: 2rem 0;
+}

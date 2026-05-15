@@ -1,0 +1,168 @@
+.sommelier-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 3rem;
+}
+
+.sommelier-hero {
+    background: linear-gradient(135deg, #FFF8F1 0%, #FFFFFF 100%);
+    border: 1px solid #FFE4C4;
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+.sommelier-icon {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 1.2rem;
+}
+
+.sommelier-hero h1 {
+    font-size: 2.5rem;
+    color: #111827;
+    margin-bottom: 0.8rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.sommelier-hero p {
+    color: #4B5563;
+    font-size: 1.15rem;
+    max-width: 550px;
+    margin: 0 auto 2.5rem auto;
+    line-height: 1.6;
+}
+
+.sommelier-search {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.sommelier-search input {
+    background-color: #ffffff;
+    border: 2px solid #E5E7EB;
+    border-radius: 100px;
+    padding: 1.2rem 1.8rem;
+    font-size: 1.05rem;
+    outline: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    color: #111827;
+}
+
+.sommelier-search input::placeholder {
+    color: #9CA3AF;
+}
+
+.sommelier-search input:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+}
+
+.sommelier-search button {
+    background: linear-gradient(to right, #F59E0B, #EA580C);
+    color: #ffffff;
+    border: none;
+    border-radius: 100px;
+    padding: 1.2rem 2.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+}
+
+.sommelier-search button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.45);
+}
+
+.sommelier-search button:disabled {
+    background: #E5E7EB;
+    color: #9CA3AF;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.sommelier-error {
+    color: #E7000B;
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+/* Loading State */
+.sommelier-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    gap: 1.5rem;
+}
+
+.sommelier-loading p {
+    color: #6B7280;
+    font-weight: 500;
+    font-size: 1.1rem;
+    animation: pulse 2s infinite;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #FEF3C7;
+    border-top-color: #F59E0B;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Results */
+.sommelier-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.sommelier-explanation {
+    background-color: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    color: #1F2937;
+    line-height: 1.7;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.05);
+}
+
+.sommelier-explanation h3 {
+    margin-bottom: 0.8rem;
+    color: #B45309;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.sommelier-posts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.sommelier-posts-grid > * {
+    width: 100%;
+    margin: 0;
+}

@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MessagesPage from '../components/MessagesPage';
+import { initAuth } from '../stores/authStore';
+---
+
+<Layout title="Messages" activePage="messages">
+  <main class="full-page-messages">
+    <MessagesPage client:load />
+  </main>
+</Layout>
+
+<script>
+  import { $isLoggedIn } from '../stores/authStore';
+  // If not logged in, redirect to login
+  if (!$isLoggedIn.get()) {
+    window.location.href = '/login';
+  }
+</script>
+
+
+<style>
+  .full-page-messages {
+    height: calc(100vh - 64px); 
+    margin-top: 64px; 
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (min-width: 768px) {
+    .full-page-messages {
+      height: calc(100vh - 72px);
+      margin-top: 72px;
+    }
+  }
+
+  /* Global fix: Ensure nav is visible and body doesn't swallow it */
+  :global(nav) {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000 !important;
+    display: flex !important; /* Force visibility */
+  }
+
+  :global(html), :global(body) {
+    overflow: hidden !important;
+    height: 100% !important;
+    margin: 0;
+    padding: 0;
+    background: #f8fafc;
+  }
+</style>

@@ -1,0 +1,61 @@
+.sommelier-widget {
+    background: var(--white);
+    border: 1px solid #f3f4f69d;
+    border-radius: 36px;
+    padding: 1.5rem;
+    box-shadow: -2px 2px 3px #dadada44;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+}
+
+.sommelier-widget-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    flex-shrink: 0;
+}
+
+.sommelier-widget-icon img {
+    filter: brightness(0) invert(1);
+}
+
+.sommelier-widget-body h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin: 0 0 0.4rem;
+}
+
+.sommelier-widget-body p {
+    font-size: 0.82rem;
+    color: var(--gray-400);
+    line-height: 1.45;
+    margin: 0 0 1rem;
+}
+
+.sommelier-widget-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.55rem 1.3rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+}
+
+.sommelier-widget-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}

@@ -1,0 +1,92 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+   
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: blendus
+      POSTGRES_USER: blendus
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blendus -d blendus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./smoothies-api
+    container_name: blendus-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./smoothies-api:/var/www/html
+    environment:
+      - APP_URL=http://localhost:8000
+      - DB_HOST=postgres
+      - DB_CONNECTION=pgsql
+      - DB_DATABASE=blendus
+      - DB_USERNAME=blendus
+      - DB_PASSWORD=password
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+      - FRONTEND_URL=http://localhost:4321
+      - SANCTUM_STATEFUL_DOMAINS=localhost:4321
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo '>>> Setting up environment...' &&
+        if [ ! -f .env ]; then cp .env.example .env; fi &&
+        php artisan key:generate --force &&
+        echo '>>> Running migrations...' &&
+        php artisan migrate --force &&
+        echo '>>> Running seeder...' &&
+        php artisan db:seed --force --class=DatabaseSeeder &&
+        echo '>>> Linking storage...' &&
+        php artisan storage:link --force &&
+        echo '>>> Pulling AI models in background...' &&
+        curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"nomic-embed-text\"}' &
+        curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2:1b\"}' &
+        echo '>>> Starting server...' &&
+        php artisan serve --host=0.0.0.0 --port=8000
+      "
+
+
+    restart: unless-stopped
+
+
+  frontend:
+    build:
+      context: ./blendus-frontend
+    container_name: blendus-frontend
+    ports:
+      - "4321:4321"
+    volumes:
+      - ./blendus-frontend:/app
+      - /app/node_modules
+    environment:
+      - PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  postgres_data:
+

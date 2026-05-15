@@ -1,0 +1,233 @@
+.product-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 0.737rem + 1.053vw, 2rem);
+    margin: 80px auto 0; /* Added 80px to clear fixed nav */
+    max-width: 1000px;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+    margin-bottom: 1rem;
+}
+
+.page-header .back {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    width: fit-content;
+}
+
+.page-header .back .back-btn {
+    background-color: white;
+    padding: .5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--gray-100);
+    transition: all .2s ease;
+}
+
+.page-header .back h3 {
+    color: var(--gray-600);
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.page-header .back:hover .back-btn {
+    background-color: var(--amber-50);
+    border-color: var(--amber-200);
+    transform: translateX(-5px);
+}
+
+.page-header .back:hover h3 {
+    color: var(--amber-700);
+}
+
+.product-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 2rem;
+    box-shadow: var(--shadow-xl);
+    margin-bottom: 2rem;
+}
+
+.title-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.title-price .title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.title-price .title .product-name {
+    font-size: 2.5rem;
+    color: var(--gray-900);
+    font-weight: 800;
+}
+
+.title-price .title .category {
+    background-color: var(--amber-100);
+    width: fit-content;
+    padding: .4rem 1.2rem;
+    color: var(--amber-800);
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.price-stars {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.price-stars .price {
+    font-size: 2.5rem;
+    color: var(--amber-600);
+    font-weight: 800;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--amber-400);
+    font-size: 1.5rem;
+}
+
+.rating-text {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.buy-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.add-btn {
+    width: clamp(12rem, 10rem + 5vw, 18rem);
+    border: none;
+    background: var(--amber-600);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+}
+
+.add-btn:hover {
+    background: var(--amber-700);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+}
+
+.caption {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--gray-700);
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: var(--gray-50);
+    border-radius: 1rem;
+    border-left: 5px solid var(--amber-400);
+}
+
+.details-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    border: 1px solid var(--gray-100);
+}
+
+.details-header {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+.details-header h3 {
+    font-size: 1.5rem;
+    color: var(--gray-900);
+    font-weight: 800;
+}
+
+.details-content {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--gray-700);
+}
+
+.line {
+    height: 1px;
+    background-color: var(--gray-200);
+}
+
+.likes-comments {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.likes, .comments {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.1rem;
+    color: var(--gray-500);
+}
+
+.number {
+    color: var(--gray-900);
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .product-wrapper {
+        padding: 1rem;
+    }
+    .product-image {
+        height: 300px;
+    }
+    .title-price {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .price-stars {
+        align-items: flex-start;
+    }
+    .buy-section {
+        justify-content: center;
+    }
+    .add-btn {
+        width: 100%;
+    }
+}

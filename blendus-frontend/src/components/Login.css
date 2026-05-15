@@ -1,0 +1,105 @@
+
+.login-wrapper {
+    background-color: var(--amber-50);
+    padding: clamp(0.5rem, 0.632rem + -0.526vw, 0rem) 2rem;
+    border-radius: clamp(1.25rem, 0.921rem + 1.316vw, 2.5rem);
+    margin: -6rem 0;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 2rem;
+
+
+}
+.right, .left {
+    flex: 1;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    .logo {
+        a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            
+            .brand {
+                background: var(--gradient-logo);
+                border-radius: clamp(0.938rem, 0.855rem + 0.329vw, 1.25rem);
+                height: clamp(3.75rem, 3.092rem + 2.632vw, 6.25rem);
+                width: clamp(3.75rem, 3.092rem + 2.632vw, 6.25rem);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                svg {
+                    width: clamp(3.125rem, 2.796rem + 1.316vw, 4.375rem);
+                    height: clamp(3.125rem, 2.796rem + 1.316vw, 4.375rem);
+                }
+            }
+    
+            h1 {
+                display: flex;
+                font-size: clamp(4rem, 3.474rem + 2.105vw, 6rem);
+                font-family: 'Anek Odia';
+                background: var(--gradient-branding);
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                transform: translateY(16px);
+            }
+        }
+    }
+    .hero-pic {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        h1 {
+            width: 80%;
+            font-size: clamp(1.25rem, 0.789rem + 1.842vw, 3rem);
+            text-align: center;
+            color: var(--gray-900);
+        }
+    }
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    border-left: 1px solid var(--gray-200);
+    padding: 2rem;
+    background-color: white;
+    margin: 0 -2rem 0 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+@media (max-width: 1600px) {
+    .login-wrapper {
+        flex-direction: column;
+        margin-bottom: .2rem;
+        
+        .right {
+            border-left: none;
+            border-top: 1px solid var(--gray-200);
+            margin: 0 -2rem;
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 40px;
+            
+        }
+        .left {
+            .hero-pic {
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

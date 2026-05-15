@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+const { title = 'BlendUs' } = Astro.props;
+
+const backgrounds = [
+  'https://images.pexels.com/photos/616833/pexels-photo-616833.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'https://images.pexels.com/photos/452737/pexels-photo-452737.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  '/assets/login-1.webp',
+  '/assets/login-2.webp',
+  '/assets/login-3.webp',
+  '/assets/smoothie2.webp',
+  '/assets/smoothie4.webp',
+  '/assets/smoothie5.webp',
+  '/assets/smoothie6.webp'
+];
+const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>{title} — BlendUs</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background-color: #fdfdfd;
+        font-family: 'Alexandria', sans-serif;
+        display: flex;
+        flex-direction: column;
+      }
+      @media (min-width: 900px) {
+        body {
+          flex-direction: row;
+          height: 100vh;
+          overflow: hidden;
+        }
+      }
+      .auth-image-side {
+        flex: 1.1;
+        display: none;
+        background-size: cover;
+        background-position: center;
+        border-right: 1px solid var(--gray-100);
+      }
+      .auth-form-side {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 4rem clamp(1rem, 5vw, 6rem) 2rem;
+        background-color: #fdfdfd;
+        overflow-y: auto;
+      }
+      /* Center content vertically if it fits, without cutting off the top */
+      .auth-form-side > :global(*) {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      @media (min-width: 900px) {
+        .auth-image-side {
+          display: block;
+          height: 100vh;
+        }
+        .auth-form-side {
+          height: 100vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-image-side" style={`background-image: url('${randomBg}')`}>
+    </div>
+
+    <div class="auth-form-side">
+      <slot />
+    </div>
+  </body>
+</html>
