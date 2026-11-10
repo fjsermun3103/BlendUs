@@ -1,2 +1,0 @@
-# Production secrets for docker-compose.prod.yml
-.env.prod
