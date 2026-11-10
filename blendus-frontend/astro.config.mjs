@@ -3,13 +3,11 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
 import vercel from '@astrojs/vercel';
-import node from '@astrojs/node';
 
 export default defineConfig({
   integrations: [react()],
   output: 'server',
-  // Vercel by default; ASTRO_ADAPTER=node builds a standalone Node server (self-hosted demo, Dockerfile.prod)
-  adapter: process.env.ASTRO_ADAPTER === 'node' ? node({ mode: 'standalone' }) : vercel(),
+  adapter: vercel(),
   vite: {
     server: {
       // Docker on Windows: bind-mounted files emit no change events inside the container,

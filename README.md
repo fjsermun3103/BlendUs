@@ -1,82 +1,184 @@
-# BlendUs 🍹 - Getting Started Guide
+<div align="center">
 
-Hello! Welcome to **BlendUs**, the ultimate social network for smoothie lovers. We have optimized the setup so you can get it running almost automatically.
+# 🍹 BlendUs
 
-## Launching (Dockerized) 🐳
+**La red social para los amantes de los smoothies, con inteligencia artificial integrada.**
 
-The project (Frontend, Backend, Database, and AI) runs inside containers and auto-configures itself on startup.
+Comparte recetas, descubre nuevas combinaciones y deja que la IA te recomiende el batido perfecto para tu estado de ánimo.
 
-**Step 1 - Start everything:**
+<img src="blendus-frontend/public/assets/HERO-PIC.webp" alt="BlendUs" width="640">
+
+![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-4169E1?logo=postgresql&logoColor=white)
+![Ollama](https://img.shields.io/badge/IA-Ollama-000000?logo=ollama&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![Playwright](https://img.shields.io/badge/E2E-Playwright-2EAD33?logo=playwright&logoColor=white)
+
+</div>
+
+---
+
+## Índice
+
+- [Funcionalidades](#-funcionalidades)
+- [Arquitectura](#-arquitectura)
+- [Puesta en marcha](#-puesta-en-marcha)
+- [Cuentas de prueba](#-cuentas-de-prueba)
+- [Tests](#-tests)
+- [Pagos con Stripe](#-pagos-con-stripe)
+- [Despliegue](#-despliegue)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+
+---
+
+## ✨ Funcionalidades
+
+| | Funcionalidad | Descripción |
+|---|---|---|
+| 🥤 | **Comunidad** | Feed infinito de recetas con foto, ingredientes y pasos. Likes, comentarios, guardados y seguidores. |
+| 🎯 | **Feed "Para ti"** | Ranking personalizado mediante *embeddings*: aprende de tus likes y guardados para recomendarte lo que más te gusta. |
+| 🍷 | **Sommelier IA** | Describe cómo te sientes y el Chef Enrique te sugiere el smoothie ideal. |
+| ✨ | **Generador de recetas** | Escribe una idea y la IA crea la receta completa: título, ingredientes y preparación. |
+| 👨‍🍳 | **Asistente de cocina** | Guía interactiva paso a paso para preparar tus smoothies en tiempo real. |
+| 💬 | **Mensajería** | Chats privados y grupos, con una interfaz optimizada para móvil. |
+| 🛒 | **Marketplace** | Tienda de productos con pago seguro mediante Stripe Checkout. |
+| 📱 | **Diseño responsive** | *Mobile first*: menús y navegación pensados para el móvil. |
+
+---
+
+## 🏗 Arquitectura
+
+```mermaid
+flowchart LR
+    U([Navegador]) --> F["Frontend<br/>Astro + React"]
+    F -- "REST /api" --> B["Backend<br/>Laravel 12 + Sanctum"]
+    B --> DB[("PostgreSQL<br/>+ pgvector")]
+    B --> AI["Ollama<br/>llama3.2:1b · nomic-embed-text"]
+    B --> S["Stripe"]
+```
+
+| Capa | Tecnología |
+|---|---|
+| **Frontend** | Astro 5 (SSR) con islas de React 19, nanostores para el estado global |
+| **Backend** | Laravel 12 (API REST), autenticación con Sanctum (tokens *bearer*) |
+| **Base de datos** | PostgreSQL con la extensión pgvector para la búsqueda por similitud |
+| **IA** | Ollama ejecutado en local: `llama3.2:1b` para generar texto y `nomic-embed-text` para los embeddings |
+| **Pagos** | Stripe Checkout con webhooks firmados |
+| **Infraestructura** | Docker Compose para el desarrollo; Vercel, Hugging Face Spaces y Neon para la demo pública |
+
+---
+
+## 🚀 Puesta en marcha
+
+**Requisitos:** [Docker Desktop](https://www.docker.com/products/docker-desktop/). Nada más: el frontend, el backend, la base de datos y la IA se ejecutan en contenedores.
+
+**1. Arranca todo**
+
 ```bash
 docker compose up -d
 ```
 
-**Step 2 - AI Configuration (First time only):**
-AI models are downloaded automatically in the background. Once the system is ready, just run this command so the AI can analyze existing recipes:
+En el primer arranque el backend crea la base de datos, carga los datos de ejemplo y empieza a descargar los modelos de IA (~1,6 GB) en segundo plano.
+
+**2. Genera los embeddings** *(solo la primera vez, cuando hayan terminado de descargarse los modelos)*
 
 ```bash
-# Generate vectors for the recommendation system (do this 5 min after startup)
 docker exec blendus-backend php artisan smoothies:generate-embeddings
 ```
 
-> **Public demo:** to host a free demo on a server (Oracle Cloud + Cloudflare Tunnel), see [DEPLOY.md](DEPLOY.md).
+**3. Abre la aplicación**
 
-## Accessing the site
-*   **Frontend:** [http://localhost:4321](http://localhost:4321)
-*   **API / Backend:** [http://localhost:8000](http://localhost:8000)
+| Servicio | URL |
+|---|---|
+| Frontend | <http://localhost:4321> |
+| API | <http://localhost:8000> |
 
----
-
-## ⚠️ If you change PC or want to reset
-
-If you need to clear the database and start fresh with test data, simply run:
+<details>
+<summary><b>Reiniciar los datos desde cero</b></summary>
 
 ```bash
 docker exec blendus-backend php artisan migrate:fresh --seed
 ```
 
----
-
-## What can you do in BlendUs? (Features)
-
-*   **Smoothie Community:** Explore an infinite feed with real recipes and spectacular photos.
-*   **Personalized Ranking (AI):** Your "For You" feed learns from your likes and saves to recommend what you love most.
-*   **AI Sommelier 🍷:** Describe your mood and Chef Enrique will suggest the perfect smoothie.
-*   **AI Recipe Generator ✨:** Write an idea and the AI will create the complete recipe for you.
-*   **AI Cooking Assistant 👨‍🍳:** Interactive step-by-step guide to cook your smoothies in real-time.
-*   **Messaging Hub (Responsive) 💬:** Direct chats and groups optimized for mobile with fluid navigation.
-*   **100% Responsive Design 📱:** The entire site is "Mobile First," with menus and navigation optimized for smartphones.
+</details>
 
 ---
 
-## 📄 Technical Documentation
+## 👤 Cuentas de prueba
 
-The project includes a documentation PDF detailing:
-*   Astro + Laravel + Docker architecture.
-*   Database diagrams and data flow.
-*   Testing Strategy (Manual and E2E with Playwright).
-*   Maintenance plan and future improvements.
+| Email | Contraseña |
+|---|---|
+| `test@example.com` | `password` |
+| `nico@test.com` | `password123` |
+| `paco@test.com` | `password123` |
+
+También puedes iniciar sesión con el nombre de usuario (por ejemplo, `nico`).
 
 ---
 
-## Activating Stripe Payments 💳
+## 🧪 Tests
 
-To test the **Marketplace** and payments, follow these steps:
+**Backend (PHPUnit):** tests de funcionalidad de autenticación, posts, interacciones, chats, marketplace e IA.
+Usan una base de datos separada (`blendus_test`), así que nunca tocan tus datos de desarrollo.
 
-1.  **Get your API Keys:**
-    *   Go to the [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys) (Test Mode).
-    *   Copy your **Publishable key** to `STRIPE_KEY` in your `.env`.
-    *   Copy your **Secret key** to `STRIPE_SECRET` in your `.env`.
+```bash
+docker exec postgres createdb -U blendus blendus_test   # solo la primera vez
+docker exec blendus-backend php artisan test
+```
 
-2.  **Configure Webhooks (Local testing):**
-    *   Install the [Stripe CLI](https://stripe.com/docs/stripe-cli).
-    *   Run `stripe login` to authenticate.
-    *   Run the listener: 
-        ```bash
-        stripe listen --forward-to localhost:8000/api/stripe/webhook
-        ```
-    *   The CLI will output a "webhook signing secret" (starts with `whsec_`). Copy it to `STRIPE_WEBHOOK_SECRET` in your `.env`.
+**End-to-end (Playwright + Microsoft Edge):** recorren la aplicación real en el navegador, en escritorio y en móvil.
+Necesitan que la aplicación esté arrancada.
 
-3.  **Test a Purchase:**
-    *   Go to the Marketplace, select a product, and click "Buy".
-    *   Use the **4242 4242 4242 4242** test card to complete the transaction.
+```bash
+cd e2e
+npm install
+npm test              # sin interfaz
+npm run test:ui       # modo interactivo, para ver los tests en tiempo real
+npm run report        # informe HTML de la última ejecución
+```
+
+---
+
+## 💳 Pagos con Stripe
+
+El marketplace funciona con Stripe en **modo de prueba**.
+
+1. Copia tus claves del [panel de Stripe](https://dashboard.stripe.com/test/apikeys) en `smoothies-api/.env`:
+   `STRIPE_KEY` (clave publicable) y `STRIPE_SECRET` (clave secreta).
+2. Para confirmar los pagos en local, instala la [Stripe CLI](https://stripe.com/docs/stripe-cli) y ejecuta:
+   ```bash
+   stripe login
+   stripe listen --forward-to localhost:8000/api/stripe/webhook
+   ```
+   Copia el *webhook signing secret* que muestra (`whsec_...`) en `STRIPE_WEBHOOK_SECRET`.
+3. Compra cualquier producto con la tarjeta de prueba `4242 4242 4242 4242` (cualquier fecha futura y CVC).
+
+---
+
+## 🌍 Despliegue
+
+La demo pública se despliega **gratis y sin tarjeta de crédito**:
+
+| Parte | Servicio |
+|---|---|
+| Frontend | Vercel |
+| API e IA | Hugging Face Spaces |
+| Base de datos | Neon |
+
+La guía paso a paso está en [DEPLOY-FREE.md](DEPLOY-FREE.md).
+
+---
+
+## 📁 Estructura del proyecto
+
+```
+BlendUs/
+├── blendus-frontend/     # Astro + React (páginas, componentes y recursos estáticos)
+├── smoothies-api/        # API de Laravel (controladores, servicios, migraciones, seeders y tests)
+├── e2e/                  # Tests end-to-end con Playwright
+├── deploy/hf-space/      # Imagen Docker para el Space de Hugging Face
+├── docker-compose.yml    # Entorno de desarrollo
+└── DEPLOY-FREE.md        # Guía de despliegue
+```

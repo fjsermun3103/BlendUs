@@ -9,7 +9,7 @@ storage/framework/cache/data/*
 storage/framework/sessions/*
 storage/framework/views/*
 storage/app/public/*
-# Symlink created by `storage:link` in dev; start-prod.sh recreates it inside the container
+# Symlink created by `storage:link` in dev; start-hf.sh recreates it inside the container
 public/storage
 bootstrap/cache/*.php
 .phpunit.result.cache
