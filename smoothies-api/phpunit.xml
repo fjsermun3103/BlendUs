@@ -23,8 +23,24 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!-- PostgreSQL + pgvector: migrations use the vector type and ILIKE, so SQLite is not an option.
+             force="true" is required: docker-compose exports DB_* vars that would otherwise point tests
+             at the real development database and RefreshDatabase would wipe it. -->
+        <!-- Laravel reads $_SERVER before $_ENV, and Docker puts its env vars in $_SERVER, so both are forced. -->
+        <server name="DB_CONNECTION" value="pgsql" force="true"/>
+        <server name="DB_HOST" value="postgres" force="true"/>
+        <server name="DB_DATABASE" value="blendus_test" force="true"/>
+        <server name="OLLAMA_URL" value="http://ollama.test" force="true"/>
+        <server name="OLLAMA_HOST" value="http://ollama.test" force="true"/>
+        <server name="STRIPE_SECRET" value="sk_test_fake" force="true"/>
+        <server name="STRIPE_WEBHOOK_SECRET" value="whsec_test" force="true"/>
+        <env name="DB_CONNECTION" value="pgsql" force="true"/>
+        <env name="DB_HOST" value="postgres" force="true"/>
+        <env name="DB_DATABASE" value="blendus_test" force="true"/>
+        <env name="OLLAMA_URL" value="http://ollama.test" force="true"/>
+        <env name="OLLAMA_HOST" value="http://ollama.test" force="true"/>
+        <env name="STRIPE_SECRET" value="sk_test_fake" force="true"/>
+        <env name="STRIPE_WEBHOOK_SECRET" value="whsec_test" force="true"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

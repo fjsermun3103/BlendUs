@@ -17,6 +17,7 @@ class UpdatePostRequest extends FormRequest
             'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string'],
             'preparation_steps' => ['sometimes', 'string'],
+            'image' => ['sometimes', 'image', 'max:5120'],
             'image_url' => ['sometimes', 'nullable', 'url'],
 
             'ingredients' => ['sometimes', 'array', 'min:1'],

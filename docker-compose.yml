@@ -34,6 +34,7 @@ services:
       - "8000:8000"
     volumes:
       - ./smoothies-api:/var/www/html
+      - /var/www/html/vendor
     environment:
       - APP_URL=http://localhost:8000
       - DB_HOST=postgres
@@ -46,6 +47,9 @@ services:
       - OLLAMA_EMBEDDING_MODEL=nomic-embed-text
       - FRONTEND_URL=http://localhost:4321
       - SANCTUM_STATEFUL_DOMAINS=localhost:4321
+      # php artisan serve handles one request at a time by default, so every open browser tab,
+      # poller and E2E browser queued behind each other. Laravel only honours this with --no-reload.
+      - PHP_CLI_SERVER_WORKERS=8
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,10 +65,10 @@ services:
         echo '>>> Linking storage...' &&
         php artisan storage:link --force &&
         echo '>>> Pulling AI models in background...' &&
-        curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"nomic-embed-text\"}' &
-        curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2:1b\"}' &
+        (curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"nomic-embed-text\"}' > /dev/null &) &&
+        (curl -s -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2:1b\"}' > /dev/null &) &&
         echo '>>> Starting server...' &&
-        php artisan serve --host=0.0.0.0 --port=8000
+        exec php artisan serve --host=0.0.0.0 --port=8000 --no-reload
       "
 
 
@@ -82,6 +86,8 @@ services:
       - /app/node_modules
     environment:
       - PUBLIC_API_URL=http://localhost:8000
+      # File changes made on Windows don't reach the container as events; poll so edits show up
+      - VITE_USE_POLLING=true
     depends_on:
       - backend
     restart: unless-stopped

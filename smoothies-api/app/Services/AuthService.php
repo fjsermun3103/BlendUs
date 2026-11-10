@@ -27,7 +27,10 @@ class AuthService
      */
     public function login(array $data): array
     {
-        $user = User::where('email', $data['email'])->first();
+        $login = trim($data['email']);
+        $user = str_contains($login, '@')
+            ? User::where('email', $login)->first()
+            : User::where('username', $login)->first();
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             abort(401, 'Invalid credentials.');

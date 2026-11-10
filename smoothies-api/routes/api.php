@@ -22,9 +22,8 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index']);
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('suggested', [UserController::class, 'suggested']);
-    });
+    // Public: guests see suggestions on the home page too (must stay above {user})
+    Route::get('suggested', [UserController::class, 'suggested']);
 
     Route::get('{user}', [UserController::class, 'show']);
 

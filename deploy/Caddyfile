@@ -1,0 +1,23 @@
+# Single public origin for the demo: the browser only ever talks to this proxy,
+# so there is no CORS and the frontend can call the API with relative /api/... URLs.
+{
+	# HTTPS is terminated by Cloudflare; cloudflared reaches us over the private Docker network.
+	auto_https off
+	servers {
+		# Keep cloudflared's X-Forwarded-Proto/Host so Laravel builds https:// URLs
+		trusted_proxies static private_ranges
+	}
+}
+
+:80 {
+	encode gzip
+
+	@api path /api/* /storage/* /up
+	handle @api {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:4321
+	}
+}

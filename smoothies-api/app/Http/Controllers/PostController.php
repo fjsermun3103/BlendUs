@@ -87,7 +87,14 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
-        $updated = $this->postService->update($post, $request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('posts', 'public');
+            $data['image_url'] = url('/storage/' . $path);
+        }
+
+        $updated = $this->postService->update($post, $data);
 
         return (new PostResource($updated))->response();
     }

@@ -29,7 +29,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
         }
 
         const err = await res.json().catch(() => ({ message: res.statusText }));
-        throw new Error(err.message ?? 'API Error');
+        // Laravel uses "message"; the AI endpoints answer with "error"
+        throw new Error(err.message ?? err.error ?? 'API Error');
     }
 
     if (res.status === 204) return undefined as T;
@@ -145,7 +146,8 @@ export const api = {
         const formData = new FormData();
         if (data.name) formData.append('name', data.name);
         if (data.username) formData.append('username', data.username);
-        if (data.bio) formData.append('bio', data.bio);
+        // Sent even when empty so the bio can be cleared (Laravel turns '' into null)
+        if (data.bio !== undefined) formData.append('bio', data.bio ?? '');
         if (data.avatar !== undefined) formData.append('avatar', data.avatar);
         if (data.avatar_file) formData.append('avatar_file', data.avatar_file);
         

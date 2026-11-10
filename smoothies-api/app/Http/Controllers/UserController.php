@@ -40,7 +40,10 @@ class UserController extends Controller
             'username' => ['sometimes', 'string', 'max:50', Rule::unique('users')->ignore($user->id)],
             'bio'      => ['sometimes', 'nullable', 'string'],
             'avatar'   => ['sometimes', 'nullable', 'string'],
+            // Only real images: anything else would be served from /storage on the API origin (stored XSS).
+            'avatar_file' => ['sometimes', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:5120'],
         ]);
+        unset($data['avatar_file']);
 
         if ($request->hasFile('avatar_file')) {
             $path = $request->file('avatar_file')->store('avatars', 'public');
@@ -86,7 +89,8 @@ class UserController extends Controller
 
     public function suggested(Request $request): JsonResponse
     {
-        $userId = $request->user()?->id;
+        // Public route: resolve the token manually so logged-in users are still excluded.
+        $userId = auth('sanctum')->id();
 
         $users = User::query()
             ->withCount(['posts'])

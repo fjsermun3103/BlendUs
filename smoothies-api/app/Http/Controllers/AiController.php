@@ -385,7 +385,17 @@ EOT;
                 'options' => ['num_ctx' => 2048],
             ]);
 
-            return response()->json(json_decode($response->json('response'), true));
+            if (! $response->successful()) {
+                return response()->json(['error' => 'AI service error.'], 502);
+            }
+
+            $result = json_decode((string) $response->json('response'), true);
+
+            if (! is_array($result) || ! isset($result['steps']) || ! is_array($result['steps'])) {
+                return response()->json(['error' => 'Invalid AI response format.'], 502);
+            }
+
+            return response()->json($result);
         } catch (\Exception $e) {
             return response()->json(['error' => 'AI Cooking Assistant failed (Parse Steps).'], 500);
         }
@@ -441,7 +451,17 @@ EOT;
                 'options' => ['num_ctx' => 1024],
             ]);
 
-            return response()->json(json_decode($response->json('response'), true));
+            if (! $response->successful()) {
+                return response()->json(['error' => 'AI service error.'], 502);
+            }
+
+            $result = json_decode((string) $response->json('response'), true);
+
+            if (! is_array($result) || ! isset($result['answer'])) {
+                return response()->json(['error' => 'Invalid AI response format.'], 502);
+            }
+
+            return response()->json($result);
         } catch (\Exception $e) {
             return response()->json(['error' => 'AI Cooking Assistant failed (Help Chat).'], 500);
         }

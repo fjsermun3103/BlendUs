@@ -57,10 +57,12 @@ class ConversationController extends Controller
                 'owner_id'    => $user->id,
             ]);
 
-            $members = [$user->id => ['role' => 'admin']];
+            $members = [];
             foreach ($data['user_ids'] as $id) {
                 $members[$id] = ['role' => 'member'];
             }
+            // Set last so the creator stays admin even if they included themselves in user_ids
+            $members[$user->id] = ['role' => 'admin'];
             $conversation->participants()->attach($members);
         }
 

@@ -19,6 +19,8 @@ AI models are downloaded automatically in the background. Once the system is rea
 docker exec blendus-backend php artisan smoothies:generate-embeddings
 ```
 
+> **Public demo:** to host a free demo on a server (Oracle Cloud + Cloudflare Tunnel), see [DEPLOY.md](DEPLOY.md).
+
 ## Accessing the site
 *   **Frontend:** [http://localhost:4321](http://localhost:4321)
 *   **API / Backend:** [http://localhost:8000](http://localhost:8000)

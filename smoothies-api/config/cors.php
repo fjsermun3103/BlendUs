@@ -12,7 +12,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:4321', 'http://localhost:3000'],
+    // Extra origins (comma separated) only matter if the frontend is served from another domain.
+    'allowed_origins' => array_values(array_filter(array_merge(
+        ['http://localhost:4321', 'http://localhost:3000'],
+        array_map('trim', explode(',', (string) env('CORS_ALLOWED_ORIGINS', '')))
+    ))),
 
     'allowed_origins_patterns' => [],
 

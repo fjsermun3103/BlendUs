@@ -3,17 +3,18 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class UserService
 {
     public function updateProfile(User $user, array $data): User
     {
-        $user->fill([
-            'name' => $data['name'] ?? $user->name,
-            'username' => $data['username'] ?? $user->username,
-            'bio' => $data['bio'] ?? $user->bio,
-            'avatar' => $data['avatar'] ?? $user->avatar,
-        ])->save();
+        // Only the fields that were sent are changed; bio/avatar may be sent as null to clear them.
+        $user->fill(array_filter(
+            Arr::only($data, ['name', 'username', 'bio', 'avatar']),
+            fn ($value, $key) => $value !== null || in_array($key, ['bio', 'avatar'], true),
+            ARRAY_FILTER_USE_BOTH,
+        ))->save();
 
         return $user->fresh();
     }

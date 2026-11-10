@@ -7,7 +7,10 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Stripe\Checkout\Session;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
 class MarketplaceController extends Controller
@@ -34,15 +37,35 @@ class MarketplaceController extends Controller
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $order = Order::create([
-            'user_id'          => $request->user()->id,
-            'product_id'       => $product->id,
-            'stripe_session_id' => 'pending_' . uniqid(),
-            'status'           => 'pending',
-            'total_cents'      => $product->price_cents,
-        ]);
+        // The order and the Stripe session are created together: if Stripe fails,
+        // the transaction rolls back and no orphan "pending" order is left behind.
+        try {
+            $session = DB::transaction(function () use ($request, $product) {
+                $order = Order::create([
+                    'user_id'           => $request->user()->id,
+                    'product_id'        => $product->id,
+                    'stripe_session_id' => 'pending_' . uniqid(),
+                    'status'            => 'pending',
+                    'total_cents'       => $product->price_cents,
+                ]);
 
-        $session = Session::create([
+                $session = $this->createCheckoutSession($product, $order);
+                $order->update(['stripe_session_id' => $session->id]);
+
+                return $session;
+            });
+        } catch (ApiErrorException $e) {
+            Log::error('Stripe checkout failed: ' . $e->getMessage());
+
+            return response()->json(['message' => 'Payment provider unavailable. Please try again later.'], 502);
+        }
+
+        return response()->json(['checkout_url' => $session->url]);
+    }
+
+    private function createCheckoutSession(Product $product, Order $order): Session
+    {
+        return Session::create([
             'payment_method_types' => ['card'],
             'line_items'           => [[
                 'price_data' => [
@@ -60,9 +83,5 @@ class MarketplaceController extends Controller
             'cancel_url'  => config('services.stripe.cancel_url'),
             'metadata'    => ['order_id' => $order->id],
         ]);
-
-        $order->update(['stripe_session_id' => $session->id]);
-
-        return response()->json(['checkout_url' => $session->url]);
     }
 }

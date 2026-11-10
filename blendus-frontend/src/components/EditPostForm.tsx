@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { api } from '../lib/api';
 import type { Post } from '../lib/api';
-import { $isLoggedIn } from '../stores/authStore';
+import { $isLoggedIn, $user } from '../stores/authStore';
 import './CreateForm.css';
 
 interface Props {
@@ -39,8 +39,17 @@ export default function EditPostForm({ postId, initial }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+        if (!$isLoggedIn.get()) {
+            window.location.href = '/login';
+            return;
+        }
         if (!initial) {
             api.getPost(postId).then(post => {
+                // Only the author may edit: send everyone else to the post itself
+                if (post.author?.id !== $user.get()?.id) {
+                    window.location.href = `/post/${postId}`;
+                    return;
+                }
                 setIngredients(post.ingredients.map(i => ({ ingredient: i.name, amount: `${i.quantity} ${i.unit}` })));
                 setTags(post.tags.map(t => '#' + t.name));
                 setPreview(post.image_url);
