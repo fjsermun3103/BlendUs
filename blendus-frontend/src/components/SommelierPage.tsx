@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PostCard from './PostCard';
+import { API_URL } from '../lib/api';
 import type { Post } from '../lib/api';
 import { $isLoggedIn } from '../stores/authStore';
 import { AI_ENABLED } from '../lib/features';
@@ -36,8 +37,7 @@ export default function SommelierPage() {
 
         try {
             const token = localStorage.getItem('blendus_token');
-            const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
-            const res = await fetch(`${apiUrl}/api/ai/sommelier`, {
+            const res = await fetch(`${API_URL}/api/ai/sommelier`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

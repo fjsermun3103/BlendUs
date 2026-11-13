@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { api } from '../lib/api';
+import { api, API_URL } from '../lib/api';
 import type { Tag } from '../lib/api';
 import { $isLoggedIn } from '../stores/authStore';
 import { AI_ENABLED } from '../lib/features';
@@ -55,8 +55,7 @@ export default function CreatePostForm() {
         setAiError('');
         try {
             const token = localStorage.getItem('blendus_token');
-            const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
-            const res = await fetch(`${apiUrl}/api/ai/generate-smoothie`, {
+            const res = await fetch(`${API_URL}/api/ai/generate-smoothie`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 // Central API client for the BlendUs app — aligned to Nico's API v2
-const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
+// Trailing slashes are removed: "https://api.example.com/" would produce "//api/..." URLs, which the API answers with 404
+export const API_URL = (import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000').replace(/\/+$/, '');
 
 function getToken(): string | null {
     if (typeof localStorage === 'undefined') return null;
