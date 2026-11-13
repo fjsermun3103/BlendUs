@@ -2,6 +2,8 @@ import { useState } from 'react';
 import PostCard from './PostCard';
 import type { Post } from '../lib/api';
 import { $isLoggedIn } from '../stores/authStore';
+import { AI_ENABLED } from '../lib/features';
+import AiUnavailableNotice from './AiUnavailableNotice';
 import './SommelierPage.css';
 
 const renderBoldText = (text: string) => {
@@ -65,17 +67,19 @@ export default function SommelierPage() {
                 <span className="sommelier-icon">🧋✨</span>
                 <h1>BlendUs AI Sommelier</h1>
                 <p>Tell us how you're feeling, what you need, or what you've done today. We'll pick the perfect smoothies for your mood.</p>
-                
+
+                {!AI_ENABLED && <AiUnavailableNotice feature="The AI Sommelier" />}
+
                 <form className="sommelier-search" onSubmit={handleSearch}>
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="E.g. I just finished a heavy workout and need recovery..."
                         value={mood}
                         onChange={(e) => setMood(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || !AI_ENABLED}
                         maxLength={200}
                     />
-                    <button type="submit" disabled={loading || !mood.trim()}>
+                    <button type="submit" disabled={loading || !mood.trim() || !AI_ENABLED}>
                         {loading ? 'Thinking...' : 'Match Smoothies'}
                     </button>
                 </form>

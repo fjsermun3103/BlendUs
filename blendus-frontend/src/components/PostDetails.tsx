@@ -8,6 +8,8 @@ import './IngredientsComponent.css';
 import './CommentsComponent.css';
 import { $isLoggedIn, $user } from '../stores/authStore';
 import AiCookingAssistant from './AiCookingAssistant';
+import AiUnavailableNotice from './AiUnavailableNotice';
+import { AI_ENABLED } from '../lib/features';
 
 interface Props {
     postId: number;
@@ -282,9 +284,12 @@ export default function PostDetails({ postId }: Props) {
                         <h3 style={{ margin: 0 }}>Instructions</h3>
                     </div>
                     <button
-                        className="cook-with-ai" 
+                        className="cook-with-ai"
                         onClick={() => setIsCookingMode(true)}
+                        disabled={!AI_ENABLED}
+                        title={AI_ENABLED ? undefined : 'Not available in this online demo'}
                         style={{
+                            ...(AI_ENABLED ? {} : { opacity: 0.5, cursor: 'not-allowed' }),
                             background: 'linear-gradient(90deg, #F59E0B, #EA580C)',
                             color: 'white',
                             border: 'none',
@@ -301,9 +306,10 @@ export default function PostDetails({ postId }: Props) {
                         onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
                         onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                     >
-                        👨‍🍳 Cook with AI 
+                        👨‍🍳 Cook with AI
                     </button>
                 </div>
+                {!AI_ENABLED && <AiUnavailableNotice feature="The AI cooking assistant" compact />}
                 <p className="instructions-content" style={{ whiteSpace: 'pre-line' }}>
                     {post.preparation_steps || "Mix and blend to your heart's desire! 🍹"}
                 </p>

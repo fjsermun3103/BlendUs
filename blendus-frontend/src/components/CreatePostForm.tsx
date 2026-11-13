@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { api } from '../lib/api';
 import type { Tag } from '../lib/api';
 import { $isLoggedIn } from '../stores/authStore';
+import { AI_ENABLED } from '../lib/features';
+import AiUnavailableNotice from './AiUnavailableNotice';
 import './CreateForm.css';
 
 interface IngredientRow {
@@ -258,7 +260,16 @@ export default function CreatePostForm() {
                     </svg>
                 </div>
 
-                {aiOpen && (
+                {aiOpen && !AI_ENABLED && (
+                    <div className="ai-body">
+                        <AiUnavailableNotice feature="The AI recipe generator">
+                            It needs local language models (Ollama) that do not fit in the free hosting of this demo.
+                            You can still create your recipe by filling in the form below.
+                        </AiUnavailableNotice>
+                    </div>
+                )}
+
+                {aiOpen && AI_ENABLED && (
                     <div className="ai-body">
                         <p className="ai-hint">Describe the smoothie you want and our AI will create a complete recipe for you.</p>
                         <textarea

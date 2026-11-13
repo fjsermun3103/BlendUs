@@ -1,113 +1,144 @@
-# Free BlendUs demo in the cloud (no credit card)
+# Demo online gratuita de BlendUs (sin tarjeta)
 
-Each part of the app runs on a different free service. None of them asks for a card.
+Cada parte de la aplicación se aloja en un servicio distinto con plan gratuito. Ninguno pide tarjeta de crédito.
 
 ```
-browser ──> Vercel (Astro frontend)
+navegador ──> Vercel (frontend Astro)
    │
-   └── /api, /storage ──> Hugging Face Space (Laravel API + Ollama) ──> Neon (PostgreSQL + pgvector)
+   └── /api ──> Render (API Laravel) ──> Neon (PostgreSQL + pgvector)
 ```
 
-| Part | Service | Free plan limits to know |
+| Parte | Servicio | Límites del plan gratuito |
 |---|---|---|
-| Frontend | [Vercel](https://vercel.com) (Hobby) | Personal, non-commercial use |
-| API + AI models | [Hugging Face Spaces](https://huggingface.co/spaces) (CPU basic) | Sleeps after ~2 days without visits; disk is wiped on every restart |
-| Database | [Neon](https://neon.tech) (Free) | 0.5 GB; the database pauses after a few idle minutes and wakes up on the next query |
+| Frontend | [Vercel](https://vercel.com) (Hobby) | Uso personal, no comercial |
+| API | [Render](https://render.com) (Free) | 512 MB de RAM; se duerme tras 15 min sin visitas |
+| Base de datos | [Neon](https://neon.tech) (Free) | 0,5 GB; se pausa tras unos minutos sin uso y despierta sola |
 
-> Free plans change. Check each service's current conditions when you sign up.
+> Las condiciones de los planes gratuitos cambian. Comprueba al registrarte que ninguno te pide tarjeta.
 
-Files involved: `deploy/hf-space/Dockerfile`, `deploy/hf-space/README.md`, `smoothies-api/docker/start-hf.sh`.
-The Space clones the API code from this GitHub repository (`main` branch) when it builds, so **push your changes to GitHub first**.
-The repository must be public for the Space to clone it.
+## Qué cambia respecto a la versión local
 
-## 1. Database (Neon)
+La versión online es una **demo sin IA**. Los modelos de Ollama necesitan varios GB de RAM y no caben en ningún hosting gratuito,
+así que la demo se publica con la IA desactivada:
 
-1. Sign up at <https://neon.tech> and create a project. Pick region **AWS US East (N. Virginia)**, close to where Spaces run.
-2. In *Connect*, **turn off "Connection pooling"** and copy the connection string. It looks like:
-   `postgresql://neondb_owner:xxxx@ep-xxxx.us-east-1.aws.neon.tech/neondb?sslmode=require`
+| Funcionalidad | En la demo |
+|---|---|
+| Sommelier IA, generador de recetas y asistente de cocina | Muestran un aviso explicando por qué no están disponibles |
+| Feed "For You" | Muestra los últimos smoothies, con un aviso |
+| Todo lo demás (feed, posts, likes, comentarios, chats, perfiles, marketplace) | Funciona con normalidad |
 
-That is your `DB_URL`. The API creates the tables, enables pgvector and loads the demo data on its first start.
+Las fotos que suben los usuarios se guardan en la base de datos, porque Render borra el disco cada vez que la API se duerme.
 
-## 2. API (Hugging Face Space)
+Todo esto se controla con variables de entorno, sin tocar el código:
 
-1. Sign up at <https://huggingface.co> and create a Space (*New Space*):
-   - **Name:** for example `blendus-api`
-   - **SDK:** Docker → *Blank*
-   - **Hardware:** CPU basic (free)
-   - **Visibility:** Public (the frontend must be able to call it)
-2. *Files → Add file → Upload files*: upload **`deploy/hf-space/Dockerfile`** and **`deploy/hf-space/README.md`** from this repository.
-   They replace the default ones and must stay at the root of the Space.
-3. *Settings → Variables and secrets*, add:
+| Variable | Dónde | Valor en la demo |
+|---|---|---|
+| `AI_ENABLED` | API | `false` (ya viene así en el `Dockerfile` de producción) |
+| `IMAGES_IN_DATABASE` | API | `true` (ya viene así en el `Dockerfile` de producción) |
+| `PUBLIC_AI_ENABLED` | Frontend | `false` (se configura en Vercel) |
 
-   | Name | Type | Value |
-   |---|---|---|
-   | `APP_KEY` | Secret | Generate it with `docker run --rm php:8.2-cli php -r "echo 'base64:'.base64_encode(random_bytes(32)).PHP_EOL;"` |
-   | `DB_URL` | Secret | The Neon connection string |
-   | `APP_URL` | Variable | `https://<hf-user>-blendus-api.hf.space` (the Space URL, see below) |
+En local, con `docker compose up`, la IA sigue funcionando como siempre.
 
-4. The Space builds by itself. The first build takes 10–15 minutes because it downloads the AI models (~1.6 GB).
-   The *Logs* tab shows `Server running on [http://0.0.0.0:7860]` when it is ready.
+## 1. Base de datos (Neon)
 
-The Space's own URL is `https://<hf-user>-<space-name>.hf.space` (in lowercase; dots and underscores become hyphens).
-Check it at `https://<hf-user>-blendus-api.hf.space/up`, which should return a green "Application up" page.
+1. Regístrate en <https://neon.tech> y crea un proyecto en la región **AWS Europe Central 1 (Frankfurt)**, la misma que usaremos en Render.
+2. En **Connect**, **desactiva "Connection pooling"** y copia la cadena de conexión. Tiene esta forma:
+   `postgresql://neondb_owner:xxxx@ep-xxxx.eu-central-1.aws.neon.tech/neondb?sslmode=require`
+
+Esa es tu `DB_URL`. La API crea las tablas y carga los datos de ejemplo la primera vez que arranca.
+
+## 2. API (Render)
+
+1. Genera una clave para Laravel (`APP_KEY`) en tu PC:
+   ```bash
+   docker run --rm php:8.2-cli php -r "echo 'base64:'.base64_encode(random_bytes(32)).PHP_EOL;"
+   ```
+2. Regístrate en <https://render.com> con tu cuenta de GitHub y crea un **New → Web Service** a partir del repositorio **BlendUs**:
+
+   | Campo | Valor |
+   |---|---|
+   | Name | `blendus-api` |
+   | Language | Docker |
+   | Branch | `main` |
+   | Region | Frankfurt (EU Central) |
+   | Root Directory | `smoothies-api` |
+   | Instance Type | **Free** |
+
+3. En **Environment Variables**, añade:
+
+   | Variable | Valor |
+   |---|---|
+   | `APP_KEY` | La clave del paso 1 |
+   | `DB_URL` | La cadena de conexión de Neon |
+
+4. En **Advanced → Health Check Path**, escribe `/up`.
+5. Pulsa **Deploy Web Service**. El primer despliegue tarda unos 5 minutos. Cuando en los logs aparezca
+   `Server running on [http://0.0.0.0:10000]`, la API está lista.
+
+Render te da una URL del tipo `https://blendus-api.onrender.com`; si el nombre está ocupado, añade un sufijo.
+Compruébala abriendo `https://blendus-api.onrender.com/api/posts`: debería devolver los posts en JSON.
 
 ## 3. Frontend (Vercel)
 
-1. Sign up at <https://vercel.com> with your GitHub account and *Add New → Project* → import this repository.
-2. Settings before the first deploy:
+1. Regístrate en <https://vercel.com> con tu cuenta de GitHub y ve a **Add New → Project** → importa el repositorio **BlendUs**.
+2. Antes del primer despliegue, configura:
    - **Root Directory:** `blendus-frontend`
-   - **Framework Preset:** Astro (detected automatically)
-   - **Environment Variables:** `PUBLIC_API_URL` = `https://<hf-user>-blendus-api.hf.space` (no trailing slash)
-3. *Deploy*. You get a URL like `https://blendus-xxxx.vercel.app`.
+   - **Framework Preset:** Astro (se detecta solo)
+   - **Environment Variables:**
 
-`PUBLIC_API_URL` is baked in at build time: if you change it, redeploy.
+     | Variable | Valor |
+     |---|---|
+     | `PUBLIC_API_URL` | La URL de Render, **sin `/` al final** |
+     | `PUBLIC_AI_ENABLED` | `false` |
 
-## 4. Connect the API to the frontend
+3. Pulsa **Deploy**. Obtendrás una URL del tipo `https://blendus-xxxx.vercel.app`.
 
-Back in the Space, *Settings → Variables and secrets*, add two variables with the Vercel URL (no trailing slash):
+Las variables `PUBLIC_*` se incluyen al compilar: si las cambias, vuelve a desplegar (*Deployments → ⋯ → Redeploy*).
 
-| Name | Value |
+## 4. Conectar la API con el frontend
+
+En Render, ve a **Environment** y añade estas variables con la URL de Vercel (sin `/` al final):
+
+| Variable | Valor |
 |---|---|
 | `CORS_ALLOWED_ORIGINS` | `https://blendus-xxxx.vercel.app` |
 | `FRONTEND_URL` | `https://blendus-xxxx.vercel.app` |
 
-Then *Settings → Restart this Space*. Open the Vercel URL: the demo is live.
+Guarda los cambios: Render vuelve a desplegar la API automáticamente. Al terminar, abre la URL de Vercel y la demo estará online.
 
-Only that exact origin may call the API. Vercel *preview* deployments get other URLs; add them to
-`CORS_ALLOWED_ORIGINS` (comma separated) if you want to use them.
+Solo ese origen exacto puede llamar a la API. Las *preview deployments* de Vercel tienen otras URLs; si quieres usarlas,
+añádelas a `CORS_ALLOWED_ORIGINS` separadas por comas.
 
-## Demo accounts
+## Cuentas de prueba
 
-| Email | Password |
+| Email | Contraseña |
 |---|---|
 | `test@example.com` | `password` |
 | `nico@test.com` | `password123` |
 | `paco@test.com` | `password123` |
 
-These passwords are public. Tell visitors this is a demo.
+Estas contraseñas son públicas: deja claro a quien la visite que es una demo.
 
-## Deploying new versions
+## Publicar nuevas versiones
 
-- **Frontend:** every push to `main` redeploys Vercel automatically.
-- **API:** push to `main`, then in the Space *Settings → Factory rebuild*. A normal restart does **not** pick up new commits.
-- **Database changes:** new migrations run on every start of the Space.
-- **Reset the demo data:** delete and recreate the Neon database (or the tables). The next start of the Space seeds it again.
+Cada `git push` a `main` vuelve a desplegar automáticamente el frontend (Vercel) y la API (Render).
+Las migraciones nuevas se ejecutan solas al arrancar la API.
 
-## Things to know
+Para **reiniciar los datos de la demo**, borra y vuelve a crear la base de datos en Neon (*Branches* o *Databases*) y reinicia
+el servicio en Render (*Manual Deploy → Restart service*): al arrancar vuelve a cargar los datos de ejemplo.
 
-- **Uploaded photos are temporary.** The Space disk is wiped on every restart, so pictures that visitors upload
-  disappear (their posts stay, with a broken image). The demo data uses images bundled with the frontend, which are never lost.
-- **First visit after a pause is slow.** A sleeping Space takes a minute or two to wake up, and Neon a second or so.
-  The first AI request after that also has to load the model.
-- **AI speed:** the models run on 2 shared CPUs. Expect around 10 seconds per AI answer.
-- **Stripe (optional):** add `STRIPE_KEY`, `STRIPE_SECRET` and `STRIPE_WEBHOOK_SECRET` (test mode) as Space secrets.
-  The webhook URL is `https://<hf-user>-blendus-api.hf.space/api/stripe/webhook`.
+## A tener en cuenta
 
-## Testing the Space image locally
+- **La primera visita tras un rato sin uso es lenta.** Render duerme la API tras 15 minutos sin tráfico y tarda alrededor
+  de un minuto en despertar; mientras tanto, la web carga pero los datos tardan en aparecer.
+  Antes de enseñar la demo, abre la URL de la API para despertarla.
+- **Espacio de la base de datos:** las fotos subidas ocupan espacio en Neon (máximo 5 MB cada una, dentro de los 0,5 GB del plan gratuito).
+- **Stripe (opcional):** añade en Render `STRIPE_KEY`, `STRIPE_SECRET` y `STRIPE_WEBHOOK_SECRET` (modo de prueba).
+  El webhook es `https://<tu-api>.onrender.com/api/stripe/webhook`.
+
+## Probar la imagen de producción en local
 
 ```bash
-docker build -f deploy/hf-space/Dockerfile --build-context code=./smoothies-api -t blendus-hf deploy/hf-space
-docker run --rm -p 7860:7860 -e APP_KEY=base64:... -e DB_URL="postgresql://..." blendus-hf
+docker build -t blendus-api smoothies-api
+docker run --rm -p 8000:8000 -e APP_KEY=base64:... -e DB_URL="postgresql://..." blendus-api
 ```
-
-`--build-context code=...` uses your working copy instead of cloning GitHub.

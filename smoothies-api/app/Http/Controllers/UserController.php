@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\ImageStorage;
 use App\Services\UserService;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
@@ -46,8 +47,7 @@ class UserController extends Controller
         unset($data['avatar_file']);
 
         if ($request->hasFile('avatar_file')) {
-            $path = $request->file('avatar_file')->store('avatars', 'public');
-            $data['avatar'] = url('/storage/' . $path);
+            $data['avatar'] = app(ImageStorage::class)->store($request->file('avatar_file'), 'avatars');
         }
 
         $updated = $this->userService->updateProfile($user, $data);

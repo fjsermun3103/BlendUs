@@ -77,4 +77,8 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    // Keep uploaded photos and avatars in PostgreSQL instead of the disk (see App\Services\ImageStorage).
+    // Needed on free hosts whose disk is wiped on every restart (Render).
+    'images_in_database' => (bool) env('IMAGES_IN_DATABASE', false),
+
 ];

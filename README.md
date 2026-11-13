@@ -66,7 +66,7 @@ flowchart LR
 | **Base de datos** | PostgreSQL con la extensión pgvector para la búsqueda por similitud |
 | **IA** | Ollama ejecutado en local: `llama3.2:1b` para generar texto y `nomic-embed-text` para los embeddings |
 | **Pagos** | Stripe Checkout con webhooks firmados |
-| **Infraestructura** | Docker Compose para el desarrollo; Vercel, Hugging Face Spaces y Neon para la demo pública |
+| **Infraestructura** | Docker Compose para el desarrollo; Vercel, Render y Neon para la demo pública |
 
 ---
 
@@ -164,8 +164,12 @@ La demo pública se despliega **gratis y sin tarjeta de crédito**:
 | Parte | Servicio |
 |---|---|
 | Frontend | Vercel |
-| API e IA | Hugging Face Spaces |
+| API | Render |
 | Base de datos | Neon |
+
+> **La demo online no incluye la IA.** Los modelos de Ollama necesitan más memoria de la que ofrece cualquier hosting gratuito,
+> así que el Sommelier, el generador de recetas, el asistente de cocina y el feed personalizado muestran un aviso explicándolo.
+> El resto de la aplicación funciona igual. Para probar la IA, ejecuta el proyecto en local con Docker.
 
 La guía paso a paso está en [DEPLOY-FREE.md](DEPLOY-FREE.md).
 
@@ -177,8 +181,9 @@ La guía paso a paso está en [DEPLOY-FREE.md](DEPLOY-FREE.md).
 BlendUs/
 ├── blendus-frontend/     # Astro + React (páginas, componentes y recursos estáticos)
 ├── smoothies-api/        # API de Laravel (controladores, servicios, migraciones, seeders y tests)
+│   ├── Dockerfile        # Imagen de producción (Render)
+│   └── Dockerfile.dev    # Imagen de desarrollo (docker-compose.yml)
 ├── e2e/                  # Tests end-to-end con Playwright
-├── deploy/hf-space/      # Imagen Docker para el Space de Hugging Face
 ├── docker-compose.yml    # Entorno de desarrollo
 └── DEPLOY-FREE.md        # Guía de despliegue
 ```

@@ -1,3 +1,5 @@
+import { AI_ENABLED } from '../lib/features';
+import AiUnavailableNotice from './AiUnavailableNotice';
 import './SommelierWidget.css';
 
 export default function SommelierWidget() {
@@ -9,6 +11,7 @@ export default function SommelierWidget() {
                 <a href="/sommelier" className="sommelier-widget-btn">
                     Ask Sommelier ✨
                 </a>
+                {!AI_ENABLED && <AiUnavailableNotice feature="The AI Sommelier" compact />}
             </div>
         </div>
     );

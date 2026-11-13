@@ -127,4 +127,29 @@ class AiTest extends TestCase
 
         $this->assertGreaterThanOrEqual(500, $response->status(), 'Ollama failure was returned as HTTP '.$response->status().' with body '.$response->getContent());
     }
+
+    public function test_ai_endpoints_are_unavailable_when_ai_is_disabled(): void
+    {
+        config(['services.ai.enabled' => false]);
+        $this->signIn();
+
+        foreach (['generate-smoothie', 'sommelier', 'extract-steps', 'cooking-help'] as $endpoint) {
+            $this->postJson("/api/ai/{$endpoint}", [])
+                ->assertStatus(503)
+                ->assertJsonPath('ai_disabled', true);
+        }
+
+        Http::assertNothingSent();
+    }
+
+    public function test_posts_are_created_without_embeddings_when_ai_is_disabled(): void
+    {
+        config(['services.ai.enabled' => false]);
+        $this->signIn();
+
+        $this->postJson('/api/posts', $this->validPostPayload())->assertCreated();
+
+        $this->assertNull(\App\Models\Post::first()->embedding);
+        Http::assertNothingSent();
+    }
 }

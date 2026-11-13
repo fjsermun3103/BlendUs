@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
 import type { Post, Tag } from '../lib/api';
 import PostCard from './PostCard';
+import AiUnavailableNotice from './AiUnavailableNotice';
+import { AI_ENABLED } from '../lib/features';
 import './Feed.css';
 import './FiltersComponent.css';
 
@@ -101,6 +103,11 @@ export default function Feed() {
                         <span>For You</span>
                     </button>
                 </div>
+                {feedType === 'personalized' && !AI_ENABLED && (
+                    <AiUnavailableNotice feature="Personalized ranking" compact>
+                        Personalized ranking uses AI, which is off in this online demo: showing the latest smoothies instead.
+                    </AiUnavailableNotice>
+                )}
             </div>
 
             {/* Filters */}

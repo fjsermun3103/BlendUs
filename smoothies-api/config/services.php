@@ -35,6 +35,12 @@ return [
         ],
     ],
 
+    // AI_ENABLED=false turns off every Ollama feature (the free demo hosting has no room for the models):
+    // AI endpoints answer 503 and posts are saved without embeddings (the "For You" feed falls back to latest).
+    'ai' => [
+        'enabled' => (bool) env('AI_ENABLED', true),
+    ],
+
     'stripe' => [
         'secret'          => env('STRIPE_SECRET'),
         'webhook_secret'  => env('STRIPE_WEBHOOK_SECRET'),

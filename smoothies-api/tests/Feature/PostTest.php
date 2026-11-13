@@ -90,6 +90,26 @@ class PostTest extends TestCase
         $this->assertCount(1, Storage::disk('public')->files('posts'));
     }
 
+    public function test_uploaded_image_can_be_stored_in_the_database_and_served(): void
+    {
+        config(['filesystems.images_in_database' => true]);
+        Storage::fake('public');
+        $this->signIn();
+
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==');
+        $payload = $this->validPostPayload(['image' => UploadedFile::fake()->createWithContent('smoothie.png', $png)]);
+
+        $url = $this->post('/api/posts', $payload, ['Accept' => 'application/json'])
+            ->assertCreated()
+            ->json('data.image_url');
+
+        $this->assertStringContainsString('/api/images/', $url);
+        $this->assertCount(0, Storage::disk('public')->allFiles(), 'Nothing should be written to disk');
+
+        $image = $this->get(parse_url($url, PHP_URL_PATH))->assertOk()->assertHeader('Content-Type', 'image/png');
+        $this->assertSame($png, $image->getContent());
+    }
+
     public function test_post_creation_still_works_when_ollama_is_down(): void
     {
         $this->signIn();

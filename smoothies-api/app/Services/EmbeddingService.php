@@ -20,6 +20,10 @@ class EmbeddingService
 
     public function generateEmbedding(string $text): ?array
     {
+        if (! config('services.ai.enabled')) {
+            return null;
+        }
+
         try {
             $response = Http::post("{$this->ollamaUrl}/api/embeddings", [
                 'model' => $this->model,

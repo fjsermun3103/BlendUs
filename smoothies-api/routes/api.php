@@ -11,6 +11,8 @@ use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AiController;
+use App\Http\Controllers\ImageController;
+use App\Http\Middleware\EnsureAiEnabled;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -80,10 +82,15 @@ Route::middleware('auth:sanctum')->prefix('conversations')->group(function () {
     Route::delete('{conversation}/messages/{message}', [MessageController::class, 'destroy']);
 });
 
-Route::middleware('auth:sanctum')->post('ai/generate-smoothie', [AiController::class, 'generateSmoothie']);
-Route::middleware('auth:sanctum')->post('ai/sommelier', [AiController::class, 'sommelier']);
-Route::middleware('auth:sanctum')->post('ai/extract-steps', [AiController::class, 'extractSteps']);
-Route::middleware('auth:sanctum')->post('ai/cooking-help', [AiController::class, 'cookingHelp']);
+// Uploaded images stored in the database (IMAGES_IN_DATABASE=true)
+Route::get('images/{image}', [ImageController::class, 'show'])->whereUuid('image');
+
+Route::middleware(['auth:sanctum', EnsureAiEnabled::class])->prefix('ai')->group(function () {
+    Route::post('generate-smoothie', [AiController::class, 'generateSmoothie']);
+    Route::post('sommelier', [AiController::class, 'sommelier']);
+    Route::post('extract-steps', [AiController::class, 'extractSteps']);
+    Route::post('cooking-help', [AiController::class, 'cookingHelp']);
+});
 
 Route::prefix('marketplace')->group(function () {
     Route::get('products', [MarketplaceController::class, 'index']);

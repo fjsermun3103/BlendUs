@@ -29,6 +29,7 @@ services:
   backend:
     build:
       context: ./smoothies-api
+      dockerfile: Dockerfile.dev
     container_name: blendus-backend
     ports:
       - "8000:8000"
