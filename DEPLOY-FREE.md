@@ -25,7 +25,8 @@ así que la demo se publica con la IA desactivada:
 |---|---|
 | Sommelier IA, generador de recetas y asistente de cocina | Muestran un aviso explicando por qué no están disponibles |
 | Feed "For You" | Muestra los últimos smoothies, con un aviso |
-| Todo lo demás (feed, posts, likes, comentarios, chats, perfiles, marketplace) | Funciona con normalidad |
+| Pago del marketplace | Solo funciona si añades claves de Stripe en Render (ver [A tener en cuenta](#a-tener-en-cuenta)) |
+| Todo lo demás (feed, posts, likes, comentarios, chats, perfiles, catálogo) | Funciona con normalidad |
 
 Las fotos que suben los usuarios se guardan en la base de datos, porque Render borra el disco cada vez que la API se duerme.
 
@@ -86,14 +87,20 @@ Compruébala abriendo `https://blendus-api.onrender.com/api/posts`: debería dev
    - **Framework Preset:** Astro (se detecta solo)
    - **Environment Variables:**
 
-     | Variable | Valor |
-     |---|---|
-     | `PUBLIC_API_URL` | La URL de Render, **sin `/` al final** |
-     | `PUBLIC_AI_ENABLED` | `false` |
+     | Variable | Valor | Tipo |
+     |---|---|---|
+     | `PUBLIC_API_URL` | La URL de Render, por ejemplo `https://blendus-api.onrender.com` | **Config** |
+     | `PUBLIC_AI_ENABLED` | `false` | **Config** |
 
 3. Pulsa **Deploy**. Obtendrás una URL del tipo `https://blendus-xxxx.vercel.app`.
 
-Las variables `PUBLIC_*` se incluyen al compilar: si las cambias, vuelve a desplegar (*Deployments → ⋯ → Redeploy*).
+Notas sobre estas variables:
+
+- Las variables `PUBLIC_*` se incluyen al compilar: si las cambias, vuelve a desplegar (*Deployments → ⋯ → Redeploy*).
+- **Créalas como tipo Config, no Secret.** No son secretos: el navegador necesita conocer la URL de la API para llamarla, y Astro
+  solo pasa al navegador las variables que empiezan por `PUBLIC_`. Si Vercel avisa de que el prefijo las expone, es lo esperado.
+  Una variable creada como Secret no se puede convertir: bórrala y créala de nuevo como Config.
+- Nunca pongas valores secretos (`APP_KEY`, `DB_URL`, claves de Stripe) en Vercel ni con prefijo `PUBLIC_`: van en Render.
 
 ## 4. Conectar la API con el frontend
 

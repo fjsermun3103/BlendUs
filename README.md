@@ -8,6 +8,10 @@ Comparte recetas, descubre nuevas combinaciones y deja que la IA te recomiende e
 
 <img src="blendus-frontend/public/assets/HERO-PIC.webp" alt="BlendUs" width="640">
 
+### [🌐 Ver la demo online](https://blendus.vercel.app)
+
+<sub>Versión de demostración sin IA · la primera carga puede tardar alrededor de un minuto · <a href="#-demo-online">más información</a></sub>
+
 ![Astro](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
@@ -23,6 +27,7 @@ Comparte recetas, descubre nuevas combinaciones y deja que la IA te recomiende e
 ## Índice
 
 - [Funcionalidades](#-funcionalidades)
+- [Demo online](#-demo-online)
 - [Arquitectura](#-arquitectura)
 - [Puesta en marcha](#-puesta-en-marcha)
 - [Cuentas de prueba](#-cuentas-de-prueba)
@@ -35,16 +40,33 @@ Comparte recetas, descubre nuevas combinaciones y deja que la IA te recomiende e
 
 ## ✨ Funcionalidades
 
-| | Funcionalidad | Descripción |
-|---|---|---|
-| 🥤 | **Comunidad** | Feed infinito de recetas con foto, ingredientes y pasos. Likes, comentarios, guardados y seguidores. |
-| 🎯 | **Feed "Para ti"** | Ranking personalizado mediante *embeddings*: aprende de tus likes y guardados para recomendarte lo que más te gusta. |
-| 🍷 | **Sommelier IA** | Describe cómo te sientes y el Chef Enrique te sugiere el smoothie ideal. |
-| ✨ | **Generador de recetas** | Escribe una idea y la IA crea la receta completa: título, ingredientes y preparación. |
-| 👨‍🍳 | **Asistente de cocina** | Guía interactiva paso a paso para preparar tus smoothies en tiempo real. |
-| 💬 | **Mensajería** | Chats privados y grupos, con una interfaz optimizada para móvil. |
-| 🛒 | **Marketplace** | Tienda de productos con pago seguro mediante Stripe Checkout. |
-| 📱 | **Diseño responsive** | *Mobile first*: menús y navegación pensados para el móvil. |
+| | Funcionalidad | Descripción | Demo online |
+|---|---|---|:---:|
+| 🥤 | **Comunidad** | Feed infinito de recetas con foto, ingredientes y pasos. Likes, comentarios, guardados y seguidores. | ✅ |
+| 🎯 | **Feed "Para ti"** | Ranking personalizado mediante *embeddings*: aprende de tus likes y guardados para recomendarte lo que más te gusta. | 🔌 |
+| 🍷 | **Sommelier IA** | Describe cómo te sientes y el Chef Enrique te sugiere el smoothie ideal. | 🔌 |
+| ✨ | **Generador de recetas** | Escribe una idea y la IA crea la receta completa: título, ingredientes y preparación. | 🔌 |
+| 👨‍🍳 | **Asistente de cocina** | Guía interactiva paso a paso para preparar tus smoothies en tiempo real. | 🔌 |
+| 💬 | **Mensajería** | Chats privados y grupos, con una interfaz optimizada para móvil. | ✅ |
+| 🛒 | **Marketplace** | Tienda de productos con pago seguro mediante Stripe Checkout. | ⚠️ |
+| 📱 | **Diseño responsive** | *Mobile first*: menús y navegación pensados para el móvil. | ✅ |
+
+✅ disponible · 🔌 requiere IA, solo en local · ⚠️ catálogo disponible, pago desactivado
+
+---
+
+## 🌐 Demo online
+
+**<https://blendus.vercel.app>**: entra con cualquiera de las [cuentas de prueba](#-cuentas-de-prueba).
+
+Es una versión de demostración alojada en servicios gratuitos, con algunas diferencias respecto a la versión local:
+
+- **Sin IA.** Los modelos de Ollama necesitan varios GB de memoria, más de lo que ofrece cualquier hosting gratuito.
+  Las funciones de IA muestran un aviso que lo explica, y el feed "Para ti" muestra los últimos smoothies.
+- **Sin pagos.** El catálogo del marketplace se puede ver, pero el pago con Stripe no está activo.
+- **Primera carga lenta.** La API se duerme tras 15 minutos sin visitas y tarda alrededor de un minuto en despertar.
+
+Para probar la aplicación completa, ejecútala en local con Docker ([Puesta en marcha](#-puesta-en-marcha)).
 
 ---
 
@@ -58,6 +80,8 @@ flowchart LR
     B --> AI["Ollama<br/>llama3.2:1b · nomic-embed-text"]
     B --> S["Stripe"]
 ```
+
+En la demo online cada parte vive en un servicio distinto (frontend en Vercel, API en Render y base de datos en Neon) y no hay Ollama.
 
 | Capa | Tecnología |
 |---|---|
@@ -114,7 +138,7 @@ docker exec blendus-backend php artisan migrate:fresh --seed
 | `nico@test.com` | `password123` |
 | `paco@test.com` | `password123` |
 
-También puedes iniciar sesión con el nombre de usuario (por ejemplo, `nico`).
+Sirven tanto en local como en la [demo online](https://blendus.vercel.app). También puedes iniciar sesión con el nombre de usuario (por ejemplo, `nico`).
 
 ---
 
@@ -143,7 +167,8 @@ npm run report        # informe HTML de la última ejecución
 
 ## 💳 Pagos con Stripe
 
-El marketplace funciona con Stripe en **modo de prueba**.
+El marketplace funciona con Stripe en **modo de prueba**. Estos pasos son para la versión local; para activarlo en la demo online,
+consulta [DEPLOY-FREE.md](DEPLOY-FREE.md#a-tener-en-cuenta).
 
 1. Copia tus claves del [panel de Stripe](https://dashboard.stripe.com/test/apikeys) en `smoothies-api/.env`:
    `STRIPE_KEY` (clave publicable) y `STRIPE_SECRET` (clave secreta).
@@ -159,18 +184,15 @@ El marketplace funciona con Stripe en **modo de prueba**.
 
 ## 🌍 Despliegue
 
-La demo pública se despliega **gratis y sin tarjeta de crédito**:
+La [demo online](#-demo-online) se despliega **gratis y sin tarjeta de crédito**:
 
-| Parte | Servicio |
-|---|---|
-| Frontend | Vercel |
-| API | Render |
-| Base de datos | Neon |
+| Parte | Servicio | URL |
+|---|---|---|
+| Frontend | Vercel | <https://blendus.vercel.app> |
+| API | Render | <https://blendus-api.onrender.com> |
+| Base de datos | Neon | — |
 
-> **La demo online no incluye la IA.** Los modelos de Ollama necesitan más memoria de la que ofrece cualquier hosting gratuito,
-> así que el Sommelier, el generador de recetas, el asistente de cocina y el feed personalizado muestran un aviso explicándolo.
-> El resto de la aplicación funciona igual. Para probar la IA, ejecuta el proyecto en local con Docker.
-
+Cada `git push` a `main` vuelve a desplegar automáticamente el frontend y la API.
 La guía paso a paso está en [DEPLOY-FREE.md](DEPLOY-FREE.md).
 
 ---
